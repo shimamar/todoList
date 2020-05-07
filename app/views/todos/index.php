@@ -2,16 +2,19 @@
 
 //必要なデータ取得
 //DB接続情報取得ファイル
-require 'config/db.php';
+require_once( dirname( __FILE__ , 3) . '/config/db.php' );
+/*require 'config/db.php';*/
 //DBデータ取得・更新ファイル
-require 'models/todo.php';
+require_once( dirname( __FILE__ , 3) . '/models/todo.php' );
+/*require 'models/todo.php';*/
+
 
 //ユーザーID
 $user_id = 1;
 /* todos */
-$todo_list = Todo::findAll($dsn, $user, $password, $user_id);
+$todo_list = Todo::findAll($user_id);
 
- ?>
+?>
 
 <h2>TODOリスト</h2>
 <table><tbody>
