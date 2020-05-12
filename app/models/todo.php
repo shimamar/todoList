@@ -55,6 +55,30 @@ class Todo {
         return $data_list = $stmh->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public static function findDetail($todo_id){
+
+        try {
+            $dbh = new PDO(DSN, USER, PW);
+        } catch (PDOException $e) {
+            echo 'データベースにアクセスできません！' . $e->getMessage();
+            return false;
+        }
+        $sql = "SELECT * FROM sample.todos WHERE id=" . $todo_id;
+
+        try {
+            $stmh = $dbh->query($sql);
+        } catch (PDOException $e) {
+            echo '接続エラー：' . $e->getMessage();
+            return false;
+        }
+
+        if(!$stmh){
+            return $stmh;
+        }
+        //値を取得
+        return $data_detail = $stmh->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 }
 
  ?>
