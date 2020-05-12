@@ -1,19 +1,15 @@
 <?php
 
-//必要なデータ取得
-//DB接続情報取得ファイル
-require_once( dirname( __FILE__ , 3) . '/config/db.php' );
-//DBデータ取得・更新ファイル
 require_once( dirname( __FILE__ , 3) . '/controller/todoController.php' );
 
-//ユーザーID
-$user_id = 1;
-//該当ユーザーIDのTODOリスト取得
-$todo_list = index($user_id);
+//todo_id
+$todo_id = 1;
+//該当のtodo_id内容取得
+$todo_detail = detail($todo_id);
 
 ?>
 
-<h2>TODOリスト</h2>
+<h2>TODOリスト 詳細</h2>
 <table><tbody>
     <tr>
         <th>ID</th>
@@ -28,7 +24,7 @@ $todo_list = index($user_id);
         <th>deleted_at</th>
     </tr>
 
-<?php foreach($todo_list as $todo):?>
+    <?php foreach($todo_detail as $todo):?>
     <tr>
         <th><?=htmlspecialchars($todo['id'])?></th>
         <th><?=htmlspecialchars($todo['user_id'])?></th>
