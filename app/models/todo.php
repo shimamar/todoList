@@ -102,9 +102,9 @@ class Todo {
 
     public function save() {
         $sql = sprintf(
-            "INSERT INTO 'todos'
-                ('title','detail','status','created_at','updated_at')
-            VALUES ('%s', '%s', 0, NOW(), NOW());",
+            "INSERT INTO `todos`
+                (`id`, `user_id`, `title`, `detail`, `status`, `created_at`, `updated_at`)
+            VALUES ( 1, 10, '%s', '%s', 0, NOW(), NOW());",
             $this->title,
             $this->detail
         );

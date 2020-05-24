@@ -33,7 +33,7 @@ $todo_detail = $controller->detail($todo_id);
             <th>detail</th>
             <th>priority</th>
             <th>deadline_date</th>
-            <th>statue</th>
+            <th>status</th>
             <th>created_at</th>
             <th>updated_at</th>
             <th>deleted_at</th>
@@ -47,7 +47,7 @@ $todo_detail = $controller->detail($todo_id);
             <th><?=htmlspecialchars($todo['detail'])?></th>
             <th><?=htmlspecialchars($todo['priority'])?></th>
             <th><?=htmlspecialchars($todo['deadline_date'])?></th>
-            <th><?=htmlspecialchars($todo['statue'])?></th>
+            <th><?=htmlspecialchars($todo['status'])?></th>
             <th><?=htmlspecialchars($todo['created_at'])?></th>
             <?php if($todo['updated_at']) : ?>
                 <th><?=htmlspecialchars($todo['updated_at'])?></th>

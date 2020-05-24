@@ -1,6 +1,7 @@
 <?php
 
 require_once( dirname( __FILE__ , 2) . '/models/todo.php' );
+require_once( dirname( __FILE__ , 2) . '/validation/TodoValidation.php' );
 
 class todoController{
 
@@ -16,20 +17,29 @@ class todoController{
         $title = $_POST['title'];
         $detail = $_POST['detail'];
 
-        $todo = new Todo;
-        $todo->setTitle($title);
-        $todo->setDetail($detail);
-        //データ保存
-        $result = $todo->save();
+        $check = new TodoValidation;
+        $check_title = $check->nullcheck($title);
 
-        if($result === false) {
-            header("Location: ./new.php");
+        $secound_check = new TodoValidation;
+        $check_detail = $secound_check->nullcheck($detail);
+
+        if($check_title && $check_detail){
+
+            $todo = new Todo;
+            $todo->setTitle($title);
+            $todo->setDetail($detail);
+            //データ保存
+            $result = $todo->save();
+
+            if($result === false) {
+                header("Location: ./new.php");
+            }
+            header("Location: ./index.php" );
+
+        }else{
+            echo '入力項目が空です。';
         }
-        header( "Location: ./index.php" );
-        var_dump($title);
-        var_dump($detail);
     }
-
 }
 
  ?>
