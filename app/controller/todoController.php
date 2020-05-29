@@ -13,31 +13,42 @@ class todoController{
         return Todo::findById($todo_id);
     }
 
-    public static function new(){
-        $title = $_POST['title'];
-        $detail = $_POST['detail'];
+    public function new(){
+        $data = array(
+            "title" => $_POST['title'],
+            "detail" => $_POST['detail']
+        );
 
-        $check = new TodoValidation;
-        $check_title = $check->nullcheck($title);
+        $validation = new Validation;
+        $validation->setData($data);
 
-        $secound_check = new TodoValidation;
-        $check_detail = $secound_check->nullcheck($detail);
+        $validation_data = $validation->getData();
+        $title = $validation_data['title'];
+        $detail = $validation_data['detail'];
 
-        if($check_title && $check_detail){
+        if($validation->check() === false) {
+            $error_msgs = $validation->getErrorMessages();
+
+            //セッションにエラーメッセージを追加
+            session_start();
+            $_SESSION["error_msgs"] = $error_msgs;
+
+            $params = sprintf("?title=%s&detail=%s", $title, $detail);
+            header("Location: ./new.php" . $params);
+
+        } else {
 
             $todo = new Todo;
             $todo->setTitle($title);
             $todo->setDetail($detail);
-            //データ保存
+
             $result = $todo->save();
 
             if($result === false) {
-                header("Location: ./new.php");
+                $params = sprintf("title=%s&detail=%s", $title, $detail);
+                header("Location: ./new.php" . $params);
             }
             header("Location: ./index.php" );
-
-        }else{
-            echo '入力項目が空です。';
         }
     }
 }
