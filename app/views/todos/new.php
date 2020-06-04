@@ -12,7 +12,7 @@ require_once '../../controller/todoController.php';
 require_once '../../config/db.php';
 require_once '../../models/todo.php';
 
-if($_SERVER["REQUEST_METHOD"]==="POST"){
+if($_SERVER["REQUEST_METHOD"] === "POST") {
     $action = new TodoController;
     $action->new();
 }
@@ -20,7 +20,7 @@ if($_SERVER["REQUEST_METHOD"]==="POST"){
 $title = '';
 $detail = '';
 //一度入力した内容は入力欄に表示
-if($_SERVER["REQUEST_METHOD"] === "GET"){
+if($_SERVER["REQUEST_METHOD"] === "GET") {
     if(isset($_GET['title'])) {
         $title = $_GET['title'];
     }
@@ -32,7 +32,7 @@ if($_SERVER["REQUEST_METHOD"] === "GET"){
 ?>
 
 <!DOCTYPEhtml>
-<html lang="en">
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

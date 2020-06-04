@@ -1,18 +1,19 @@
 <?php
 
 //DBデータ取得・更新ファイル
-require_once( dirname( __FILE__ , 3) . '/controller/todoController.php' );
+require_once '../../controller/todoController.php';
+//require_once( dirname( __FILE__ , 3) . '/controller/todoController.php' );
 
 //ユーザーID
 $user_id = 1;
 //該当ユーザーIDのTODOリスト取得
 $controller = new todoController;
-$todo_list = $controller->index($user_id);
+$todo_list = $controller->index();
 
 ?>
 
 <!DOCTYPEhtml>
-<html lang="en">
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -44,6 +45,7 @@ $todo_list = $controller->index($user_id);
         </tr>
 
     <?php foreach($todo_list as $todo):?>
+
         <tr>
             <th><?=htmlspecialchars($todo['id'])?></th>
             <th><?=htmlspecialchars($todo['user_id'])?></th>
@@ -66,6 +68,17 @@ $todo_list = $controller->index($user_id);
         </tr>
     <?php endforeach;?>
     </tbody></table>
+
+    <!-- TODOリストのタイトルを押下すると詳細画面に遷移 -->
+    <ul>
+        <?php foreach ($todo_list as $todo):?>
+            <li>
+                <a href="./detail.php?todo_id=<?php echo $todo['id'];?>">
+                    <?php echo $todo['title'];?>
+                </a>
+            </li>
+        <?php endforeach;?>
+    </ul>
 
 </body>
 </html>

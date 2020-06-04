@@ -17,7 +17,6 @@ class Validation {
     }
 
     public function check(){
-        
         $title = $this->data['title'];
         $detail = $this->data['detail'];
 
