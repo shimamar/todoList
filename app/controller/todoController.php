@@ -7,7 +7,6 @@ class todoController{
 
     public function index() {
         $todo_list = Todo::findAll();
-
         return $todo_list;
     }
 
@@ -23,7 +22,6 @@ class todoController{
         //GETパラメータから値取得
         $todo_id = $_GET['id'];
         $todo = TODO::findById($todo_id);
-
         return $todo;
     }
 
@@ -70,10 +68,12 @@ class todoController{
     }
 
     public function edit() {
-        //パラメーターから todo_id を取得
-        $todo_id = $_GET['todo_id'];
+        //パラメーターから id を取得
+        $todo_id = $_GET['id'];
+
         //todosテーブルから該当レコード取得
         $todo = Todo::findById($todo_id);
+
         //POSTパラメータがなければ値を返して終了
         if($_SERVER["REQUEST_METHOD"] !== "POST"){
             return $todo;
@@ -102,13 +102,37 @@ class todoController{
         $title = $validation_data['title'];
         $detail = $validation_data['detail'];
 
-        $todo = new Todo;
-        $todo->setTitle($title);
-        $todo->setDetail($detail);
-        $todo->update();
+        $todo_data = new Todo;
+        $todo_data->setTitle($title);
+        $todo_data->setDetail($detail);
+        $todo_data->setid($todo_id);
+        $todo_data->update();
 
         header("Location: ./index.php" );
     }
+
+    public function delete() {
+        $todo_id = $_GET['todo_id'];
+        $is_exist = Todo::isExistfindById($todo_id);
+        if(!$is_exist) {
+            session_start();
+            $_SESSION['error_msgs'] = [sprintf("id=%sに該当するレコードが存在しません", $todo_id)];
+            header("Location: ./index.php");
+        }
+
+        $todo = new Todo;
+        $todo->setid($todo_id);
+        $result = $todo->delete();
+        if($result === false) {
+            session_start();
+            $_SESSION['error_msgs'] = [sprintf("削除に失敗しました。id=%s", $todo_id)];
+        }
+        header("Location: ./index.php");
+    }
+
+
+
+
 }
 
  ?>

@@ -9,6 +9,7 @@ class Todo {
     private $detail;
     private $status;
     private $deadline_date;
+    private $todo_id;
 
     public function __construct() {
         $this->dbConnect();
@@ -50,8 +51,16 @@ class Todo {
         $this->deadline_date = $deadline_date;
     }
 
+    public function getid() {
+        return $this->todo_id;
+    }
+
+    public function setid($todo_id) {
+        $this->todo_id = $todo_id;
+    }
+
     public static function findAll() {
-        $query = "SELECT * FROM sample.todos";
+        $query = "SELECT * FROM sample.todos order by id asc";
         $dbh = new PDO(DSN, USER, PW);
         $stmh = $dbh->query($query);
 
@@ -125,6 +134,17 @@ class Todo {
         return $result;
     }
 
+    public static function isExistfindById($todo_id) {
+        $dbh = new PDO(DSN, USER, PW);
+        $query = sprintf('SELECT * FROM sample.todos WHERE id=%s', $todo_id);
+        $stmh = $dbh->query($query);
+        if(!$stmh) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
 
     /*public static function findById($todo_id){
         try {
@@ -150,11 +170,19 @@ class Todo {
     public function save() {
         $sql = sprintf(
             "INSERT INTO `todos`
+                (`user_id`, `title`, `detail`, `status`, `created_at`, `updated_at`)
+            VALUES (1, '%s', '%s', 0, NOW(), NOW());",
+            $this->title,
+            $this->detail
+        );
+
+        /*$sql = sprintf(
+            "INSERT INTO `todos`
                 (`id`, `user_id`, `title`, `detail`, `status`, `created_at`, `updated_at`)
             VALUES ( 1, 10, '%s', '%s', 0, NOW(), NOW());",
             $this->title,
             $this->detail
-        );
+        );*/
 
         try {
             //トランザクション開始
@@ -175,9 +203,10 @@ class Todo {
     }
 
     public function update() {
-        $query = sprintf("UPDATE `todos` SET title = %s, detail = '%s';",
+        $query = sprintf("UPDATE `todos` SET title = '%s', detail = '%s' WHERE id=%s;",
             $this->title,
-            $this->detail
+            $this->detail,
+            $this->todo_id
             );
 
         try {
@@ -198,6 +227,21 @@ class Todo {
             //エラーメッセージ出力
             echo $e->getMessage();
         }
+    }
+
+    public function delete() {
+        try {
+            $this->pdo->beginTransaction();
+            $query = sprintf("DELETE FROM `todos` WHERE id=%s;", $this->todo_id);
+            $stmt = $this->pdo->prepare($query);
+            $result = $stmt->execute();
+            $this->pdo->commit();
+        } catch (PDOException $e) {
+            $this->pdo->rollBack();
+            echo $e->getMessage();
+            $result = false;
+        }
+        return $result;
     }
 
 }

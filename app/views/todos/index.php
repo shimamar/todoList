@@ -1,11 +1,24 @@
 <?php
 
 //DBデータ取得・更新ファイル
+require_once '../../config/db.php';
+require_once '../../models/todo.php';
 require_once '../../controller/todoController.php';
-//require_once( dirname( __FILE__ , 3) . '/controller/todoController.php' );
 
-//ユーザーID
-$user_id = 1;
+//データベースにアクセス
+try {
+    $dbh = new PDO(DSN, USER, PW);
+} catch (PDOException $e) {
+    echo 'データベースにアクセスできません！' . $e->getMessage();
+    exit;
+}
+
+//削除ボタンが押されていれば削除処理実行
+if(isset($_GET['action']) & $_GET['action'] === 'delete') {
+    $action = new todoController;
+    $todo_list = $action->delete();
+}
+
 //該当ユーザーIDのTODOリスト取得
 $controller = new todoController;
 $todo_list = $controller->index();
@@ -19,12 +32,9 @@ $todo_list = $controller->index();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>TODOリスト</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 </head>
 <body>
-    <div>
-        <a href="./detail.php">詳細</a>
-    </div>
-
     <div>
         <a href="./new.php">新規作成</a>
     </div>
@@ -73,12 +83,24 @@ $todo_list = $controller->index();
     <ul>
         <?php foreach ($todo_list as $todo):?>
             <li>
-                <a href="./detail.php?todo_id=<?php echo $todo['id'];?>">
+                <a href="./detail.php?id=<?php echo $todo['id'];?>">
                     <?php echo $todo['title'];?>
                 </a>
+                <button class="delete_btn" data-id="<?php echo $todo['id'];?>">
+                    削除
+                </button>
             </li>
         <?php endforeach;?>
     </ul>
 
 </body>
 </html>
+
+<script>
+$(".delete_btn").on('click', function() {
+    //data属性の値取得
+    const todo_id = $(this).data('id');
+    alert("ID：" + todo_id + "を削除しました。");
+    window.location.href = "./index.php?action=delete&todo_id=" + todo_id;
+});
+</script>

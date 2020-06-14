@@ -23,7 +23,7 @@ unset($_SESSION['error_msgs']);
 </head>
 <body>
     <div>編集</div>
-    <form action="./edit.php" method="post">
+    <form action="./edit.php?id=<?php echo $_GET['id'];?>" method="post">
         <div>
             <div>タイトル</div>
             <div>

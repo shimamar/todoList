@@ -36,13 +36,13 @@ $todo_detail = $controller->detail();
         </thead>
         <tbody>
             <tr>
-                <td scope="row"><?php echo $todo_detail['title'] ?></td>
-                <td><?php echo $todo_detail['detail'] ?></td>
+                <td scope="row"><?php echo $todo_detail[0]["title"]?></td>
+                <td><?php echo $todo_detail[0]["detail"] ?></td>
             </tr>
         </tbody>
     </table>
     <div>
-        <button><a href="./edit.php">編集</a></button>
+        <button><a href="./edit.php?id=<?php echo $todo_detail[0]['id'];?>">編集</a></button>
     </div>
 </body>
 </html>
