@@ -10,24 +10,12 @@ class todoController{
         return $todo_list;
     }
 
-    /*public static function index(){
-        return Todo::findAll();
-    }*/
-
-    /*public static function index($user_id){
-        return Todo::findAll($user_id);
-    }*/
-
     public function detail() {
         //GETパラメータから値取得
         $todo_id = $_GET['id'];
         $todo = TODO::findById($todo_id);
         return $todo;
     }
-
-    /*public static function detail($todo_id){
-        return Todo::findById($todo_id);
-    }*/
 
     public function new(){
         $data = array(
@@ -129,9 +117,6 @@ class todoController{
         }
         header("Location: ./index.php");
     }
-
-
-
 
 }
 

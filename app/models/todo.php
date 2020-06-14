@@ -72,26 +72,6 @@ class Todo {
         return $result;
     }
 
-    /*public static function findAll($user_id){
-        try {
-            $dbh = new PDO(DSN, USER, PW);
-        } catch (PDOException $e) {
-            echo 'データベースにアクセスできません！' . $e->getMessage();
-            return false;
-        }
-        $sql = "SELECT * FROM sample.todos WHERE user_id=" . $user_id;
-        try {
-            $stmh = $dbh->query($sql);
-        } catch (PDOException $e) {
-            echo '接続エラー：' . $e->getMessage();
-            return false;
-        }
-        if(!$stmh){
-            return $stmh;
-        }
-        return $data_list = $stmh->fetchAll(PDO::FETCH_ASSOC);
-    }*/
-
     public static function findByQuery($query) {
         $stmh = $this->pdo->query($query);
         if($stmh) {
@@ -101,26 +81,6 @@ class Todo {
         }
         return $result;
     }
-
-
-    //public static function findByQuery($dsn, $user, $password, $sql) {
-        //MySQLと接続
-        //try {
-            //$dbh = new PDO($dsn, $user, $password);
-        //} catch (PDOException $e) {
-            //echo 'データベースにアクセスできません！' . $e->getMessage();
-            //return false;
-        //}
-        //SQL実行
-        //try {
-            //$stmh = $dbh->query($sql);
-        //} catch (PDOException $e) {
-            //echo '接続エラー：' . $e->getMessage();
-            //return false;
-        //}
-        //値を取得
-        //return $data_list = $stmh->fetchAll(PDO::FETCH_ASSOC);
-    //}
 
     public static function findById($todo_id) {
         $query = sprintf('SELECT * FROM sample.todos WHERE id=%s', $todo_id);
@@ -145,28 +105,6 @@ class Todo {
         }
     }
 
-
-    /*public static function findById($todo_id){
-        try {
-            $dbh = new PDO(DSN, USER, PW);
-        } catch (PDOException $e) {
-            echo 'データベースにアクセスできません！' . $e->getMessage();
-            return false;
-        }
-        $sql = "SELECT * FROM sample.todos WHERE id=" . $todo_id;
-        try {
-            $stmh = $dbh->query($sql);
-        } catch (PDOException $e) {
-            echo '接続エラー：' . $e->getMessage();
-            return false;
-        }
-        if(!$stmh){
-            return $stmh;
-        }
-        //値を取得
-        return $data_detail = $stmh->fetchAll(PDO::FETCH_ASSOC);
-    }*/
-
     public function save() {
         $sql = sprintf(
             "INSERT INTO `todos`
@@ -175,14 +113,6 @@ class Todo {
             $this->title,
             $this->detail
         );
-
-        /*$sql = sprintf(
-            "INSERT INTO `todos`
-                (`id`, `user_id`, `title`, `detail`, `status`, `created_at`, `updated_at`)
-            VALUES ( 1, 10, '%s', '%s', 0, NOW(), NOW());",
-            $this->title,
-            $this->detail
-        );*/
 
         try {
             //トランザクション開始
