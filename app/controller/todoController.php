@@ -13,7 +13,7 @@ class todoController{
     public function detail() {
         //GETパラメータから値取得
         $todo_id = $_GET['id'];
-        $todo = TODO::findById($todo_id);
+        $todo = Todo::findById($todo_id);
         return $todo;
     }
 
@@ -57,7 +57,7 @@ class todoController{
 
     public function edit() {
         //パラメーターから id を取得
-        $todo_id = $_GET['id'];
+        $todo_id = $_POST['id'];
 
         //todosテーブルから該当レコード取得
         $todo = Todo::findById($todo_id);

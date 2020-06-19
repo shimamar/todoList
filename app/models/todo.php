@@ -87,7 +87,7 @@ class Todo {
         $dbh = new PDO(DSN, USER, PW);
         $stmh = $dbh->query($query);
         if($stmh) {
-            $result = $stmh->fetchAll(PDO::FETCH_ASSOC);
+            $result = $stmh->fetch(PDO::FETCH_ASSOC);
         } else {
             $result = [];
         }
