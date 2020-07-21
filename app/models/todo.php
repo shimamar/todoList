@@ -16,7 +16,8 @@ class Todo {
     }
 
     public function dbConnect() {
-        $this->pdo = new PDO('mysql:host=50284b150784;dbname=sample;charset=utf8', 'user', 'password');
+        $this->pdo = new PDO(DSN, USER, PW);
+        /*$this->pdo = new PDO('mysql:host=50284b150784;dbname=sample;charset=utf8', 'user', 'password');*/
     }
 
     public function getTitle() {
@@ -57,6 +58,14 @@ class Todo {
 
     public function setid($todo_id) {
         $this->todo_id = $todo_id;
+    }
+
+    public function getuserid() {
+        return $this->user_id;
+    }
+
+    public function setuserid($user_id) {
+        $this->user_id = $user_id;
     }
 
     public static function findAll() {
@@ -109,7 +118,8 @@ class Todo {
         $sql = sprintf(
             "INSERT INTO `todos`
                 (`user_id`, `title`, `detail`, `status`, `created_at`, `updated_at`)
-            VALUES (1, '%s', '%s', 0, NOW(), NOW());",
+            VALUES ('%s', '%s', '%s', 0, NOW(), NOW());",
+            $this->user_id,
             $this->title,
             $this->detail
         );
@@ -170,6 +180,29 @@ class Todo {
             $this->pdo->rollBack();
             echo $e->getMessage();
             $result = false;
+        }
+        return $result;
+    }
+
+    public function isExistfindByUserId($user_id) {
+        $dbh = new PDO(DSN, USER, PW);
+        $query = sprintf('SELECT * FROM sample.users WHERE id=%s', $user_id);
+        $stmh = $dbh->query($query);
+        if(!$stmh) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public function findByUserId($user_id) {
+        $dbh = new PDO(DSN, USER, PW);
+        $query = sprintf('SELECT * FROM sample.users WHERE id=%s', $user_id);
+        $stmh = $dbh->query($query);
+        if(!$stmh) {
+            $result = [];
+        } else {
+            $result = $stmh->fetch(PDO::FETCH_ASSOC);
         }
         return $result;
     }

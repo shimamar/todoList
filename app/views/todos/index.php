@@ -36,7 +36,7 @@ $todo_list = $controller->index();
 </head>
 <body>
     <div>
-        <a href="./new.php">新規作成</a>
+        <a href="./new.php?user_id=<?php echo $_GET['user_id']; ?>">新規作成</a>
     </div>
 
     <h2>TODOリスト</h2>

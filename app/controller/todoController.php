@@ -23,6 +23,8 @@ class todoController{
             "detail" => $_POST['detail']
         );
 
+        $user_id = $_POST['user_id'];
+
         $validation = new Validation;
         $validation->setData($data);
 
@@ -45,10 +47,11 @@ class todoController{
             $todo = new Todo;
             $todo->setTitle($title);
             $todo->setDetail($detail);
+            $todo->setuserid($user_id);
             $result = $todo->save();
 
             if($result === false) {
-                $params = sprintf("title=%s&detail=%s", $title, $detail);
+                $params = sprintf("?user_id=%s&title=%s&detail=%s", $user_id, $title, $detail);
                 header("Location: ./new.php" . $params);
             }
             header("Location: ./index.php" );
@@ -82,7 +85,7 @@ class todoController{
             session_start();
             $_SESSION['error_msgs'] = $error_msgs;
 
-            $params = sprintf("title=%s&detail=%s", $title, $detail);
+            $params = sprintf("?title=%s&detail=%s", $title, $detail);
             header("Location: ./edit.php" . $params);
         }
 
@@ -118,6 +121,92 @@ class todoController{
         header("Location: ./index.php");
     }
 
+    public function check() {
+        // ユーザーidとPW取得
+        $data = array(
+            "user_id" => $_POST['user_id'],
+            "user_pw" => $_POST['user_pw'],
+        );
+        //空チェック
+        $validation = new Validation;
+        $validation->setData($data);
+        $validation_users = $validation->getData();
+        $user_id = $validation_users['user_id'];
+        $user_pw = $validation_users['user_pw'];
+
+        if($validation->users_check() === false) {
+            //id 、pw いづれかが空
+            $error_msgs = $validation->getErrorMessages();
+            session_start();
+            $_SESSION['error_msgs'] = $error_msgs;
+            $params = sprintf("?user_id=%s&user_pw=%s", $user_id, $user_pw);
+            header("Location: ./index.php" . $params);
+        } else {
+            //ユーザーID チェック
+            $user_id = $_POST['user_id'];
+            $is_exist = Todo::isExistfindByUserId($user_id);
+            if(!$is_exist) {
+                session_start();
+                $_SESSION['error_msgs'] = [sprintf("user_id=%sは登録されていません", $user_id)];
+                header("Location: ./index.php");
+            } else {
+                // PW照合
+                $user_data = Todo::findByUserId($user_id);
+                $data_pw = $user_data['password'];
+                if ($data_pw == $user_pw) {
+                    //PW 適合
+                    $params = sprintf("?user_id=%s", $user_id);
+                    header("Location: ../todos/index.php" . $params);
+                } else {
+                    //PW 不適合
+                    session_start();
+                    $_SESSION['error_msgs'] = ["パスワードが間違っています"];
+                    $params = sprintf("?user_id=%s", $user_id);
+                    header("Location: ./index.php" . $params);
+                }
+            }
+        }
+    }
+
+
+    public function user_new () {
+        $data = array(
+            "user_name" => $_POST['user_name'],
+            "user_id" => $_POST['user_id'],
+            "user_pw" => $_POST['user_pw']
+        );
+
+        $validation = new Validation;
+        $validation->setData($data);
+
+        $validation_data = $validation->getData();
+        $title = $validation_data['title'];
+        $detail = $validation_data['detail'];
+
+        if($validation->check() === false) {
+            $error_msgs = $validation->getErrorMessages();
+
+            //セッションにエラーメッセージを追加
+            session_start();
+            $_SESSION["error_msgs"] = $error_msgs;
+
+            $params = sprintf("?title=%s&detail=%s", $title, $detail);
+            header("Location: ./new.php" . $params);
+
+        } else {
+
+            $todo = new Todo;
+            $todo->setTitle($title);
+            $todo->setDetail($detail);
+            $result = $todo->save();
+
+            if($result === false) {
+                $params = sprintf("?title=%s&detail=%s", $title, $detail);
+                header("Location: ./new.php" . $params);
+            }
+            header("Location: ./index.php" );
+        }
+    }
 }
 
  ?>

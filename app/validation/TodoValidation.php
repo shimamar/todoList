@@ -13,7 +13,7 @@ class Validation {
     }
 
     public function getErrorMessages() {
-        return $this->$error_msgs;
+        return $this->error_msgs;
     }
 
     public function check(){
@@ -27,6 +27,21 @@ class Validation {
             $this->error_msgs[] = '詳細が空です。';
         }
 
+        if(count($this->error_msgs) > 0) {
+            return false;
+        }
+        return true;
+    }
+
+    public function users_check() {
+        $user_id = $this->data['user_id'];
+        $user_pw = $this->data['user_pw'];
+        if(empty($user_id)) {
+            $this->error_msgs[] = 'ユーザーIDを入力してください。';
+        }
+        if(empty($user_pw)) {
+            $this->error_msgs[] = 'パスワードを入力してください。';
+        }
         if(count($this->error_msgs) > 0) {
             return false;
         }

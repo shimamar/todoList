@@ -12,13 +12,14 @@ require_once '../../controller/todoController.php';
 require_once '../../config/db.php';
 require_once '../../models/todo.php';
 
-if($_SERVER["REQUEST_METHOD"] === "POST") {
-    $action = new TodoController;
-    $action->new();
-}
+//if($_SERVER["REQUEST_METHOD"] === "POST") {
+    //$action = new TodoController;
+    //$action->new();
+//}
 
 $title = '';
 $detail = '';
+$user_id = '';
 //一度入力した内容は入力欄に表示
 if($_SERVER["REQUEST_METHOD"] === "GET") {
     if(isset($_GET['title'])) {
@@ -27,6 +28,11 @@ if($_SERVER["REQUEST_METHOD"] === "GET") {
     if(isset($_GET['detail'])) {
         $detail = $_GET['detail'];
     }
+}
+
+if($_SERVER["REQUEST_METHOD"] === "POST") {
+    $action = new TodoController;
+    $action->new();
 }
 
 ?>
@@ -53,16 +59,16 @@ if($_SERVER["REQUEST_METHOD"] === "GET") {
     <form action="./new.php" method="post">
     <div>
         <div>タイトル</div>
+        <div><input name="title" type="text" value="<?php echo $title; ?>"> </div>
+    </div>
+    <div>
+        <div>詳細</div>
         <div>
-            <input name="title" type="text" value="<?php echo $title ?>"> </div>
+            <textarea name="detail"><?php echo $detail; ?></textarea>
         </div>
-        <div>
-            <div>詳細</div>
-            <div>
-                <textarea name="detail"><?php echo $detail; ?></textarea>
-            </div>
-        </div>
-        <button type="submit">登録</button>
+    </div>
+    <input name="user_id" type="hidden" value="<?php echo $_GET['user_id']; ?>">
+    <button type="submit">登録</button>
     </form>
 
     <div>
