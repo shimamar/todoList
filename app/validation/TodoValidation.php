@@ -47,6 +47,17 @@ class Validation {
         }
         return true;
     }
+
+    public function searchitem_check() {
+        $title = $this->data['title'];
+        $status = $this->data['status'];
+        $deadline_date = $this->data['deadline_date'];
+        if(empty($title) && empty($status) && empty($deadline_date)) {
+            $this->error_msgs[] = '検索条件が設定されていません。';
+            return false;
+        }
+        return true;
+    }
 }
 
  ?>

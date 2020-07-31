@@ -82,7 +82,9 @@ class Todo {
     }
 
     public static function findByQuery($query) {
-        $stmh = $this->pdo->query($query);
+        $query = "SELECT * FROM sample.todos WHERE title LIKE '%a%'";
+        $dbh = new PDO(DSN, USER, PW);
+        $stmh = $dbh->query($query);
         if($stmh) {
             $result = $stmh->fetchAll(PDO::FERCH_ASSOC);
         } else {

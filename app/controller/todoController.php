@@ -10,6 +10,36 @@ class todoController{
         return $todo_list;
     }
 
+    public function search() {
+        $data = array(
+            "title" => $_POST['title'],
+            "status" => $_POST['staus'],
+            "deadline_date" => $_POST['deadline_date']
+        );
+
+        //検索条件が全て空の場合をチェック
+        $validation = new Validation;
+        $validation->setData($data);
+
+        $validation_data = $validation->getData();
+        $title = $validation_data['title'];
+        $staus = $validation_data['staus'];
+        $deadline_date = $validation_data['deadline_date'];
+
+        if($validation->searchitem_check() === false){
+            //検索条件が何も設定されていない場合 エラー表示
+            $error_msgs = $validation->getErrorMessages();
+            session_start();
+            $_SESSION["error_msgs"] = $error_msgs;
+            header("Location: ./index.php");
+        }else{
+            //$todo_search = new Todo;
+            $query = "SELECT * FROM sample.todos WHERE title LIKE '%" . $title . "%'";
+            $todo_search = Todo::findByQuery($query);
+            return $todo_search;
+        }
+    }
+
     public function detail() {
         //GETパラメータから値取得
         $todo_id = $_GET['id'];

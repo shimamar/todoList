@@ -1,5 +1,11 @@
 <?php
 
+//セッションからメッセージ取得
+session_start();
+$error_msgs = $_SESSION["error_msgs"];
+//セッション削除
+unset($_SESSION["error_msgs"] );
+
 //DBデータ取得・更新ファイル
 require_once '../../config/db.php';
 require_once '../../models/todo.php';
@@ -23,6 +29,12 @@ if(isset($_GET['action']) & $_GET['action'] === 'delete') {
 $controller = new todoController;
 $todo_list = $controller->index();
 
+//検索データ取得
+if($_SERVER["REQUEST_METHOD"] === "POST") {
+    $action = new TodoController;
+    $todo_search = $action->search();
+}
+
 ?>
 
 <!DOCTYPEhtml>
@@ -38,6 +50,32 @@ $todo_list = $controller->index();
     <div>
         <a href="./new.php?user_id=<?php echo $_GET['user_id']; ?>">新規作成</a>
     </div>
+
+    <div>
+        <h3>検索条件</h3>
+        <form action="./index.php" method="post">
+            <div>
+                <div>タイトル</div>
+                <div>
+                    <input name="title" id="$title" type="text">
+                </div>
+            </div>
+            <div>
+                <div>ステータス</div>
+                <div>
+                    <input name="status" id="status" type="text">
+                </div>
+            </div>
+            <div>
+                <div>締め切り日時</div>
+                <div>
+                    <input name="deadline_date" id="deadline_date" type="text">
+                </div>
+            </div>
+            <button type="submit">検索</button>
+        </form>
+    </div>
+
 
     <h2>TODOリスト</h2>
     <table><tbody>
