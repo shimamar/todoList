@@ -17,7 +17,6 @@ class Todo {
 
     public function dbConnect() {
         $this->pdo = new PDO(DSN, USER, PW);
-        /*$this->pdo = new PDO('mysql:host=50284b150784;dbname=sample;charset=utf8', 'user', 'password');*/
     }
 
     public function getTitle() {
