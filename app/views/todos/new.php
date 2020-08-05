@@ -3,23 +3,19 @@
 //セッションからメッセージ取得
 session_start();
 $error_msgs = $_SESSION["error_msgs"];
-
-//セッション削除
 unset($_SESSION["error_msgs"] );
+
+//セッションからユーザーID取得
+session_start();
+$user_id = $_SESSION["user_id"];
 
 //DBデータ取得・更新ファイル
 require_once '../../controller/todoController.php';
 require_once '../../config/db.php';
 require_once '../../models/todo.php';
 
-//if($_SERVER["REQUEST_METHOD"] === "POST") {
-    //$action = new TodoController;
-    //$action->new();
-//}
-
 $title = '';
 $detail = '';
-$user_id = '';
 //一度入力した内容は入力欄に表示
 if($_SERVER["REQUEST_METHOD"] === "GET") {
     if(isset($_GET['title'])) {
@@ -67,7 +63,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST") {
             <textarea name="detail"><?php echo $detail; ?></textarea>
         </div>
     </div>
-    <input name="user_id" type="hidden" value="<?php echo $_GET['user_id']; ?>">
+    <input name="user_id" type="hidden" value="<?php echo $user_id; ?>">
     <button type="submit">登録</button>
     </form>
 

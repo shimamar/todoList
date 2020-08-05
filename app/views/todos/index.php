@@ -6,6 +6,10 @@ $error_msgs = $_SESSION["error_msgs"];
 //セッション削除
 unset($_SESSION["error_msgs"] );
 
+//セッションからユーザーID取得
+session_start();
+$user_id = $_SESSION["user_id"];
+
 //DBデータ取得・更新ファイル
 require_once '../../config/db.php';
 require_once '../../models/todo.php';
@@ -48,12 +52,16 @@ if($_SERVER["REQUEST_METHOD"] === "POST") {
 </head>
 <body>
     <div>
-        <a href="./new.php?user_id=<?php echo $_GET['user_id']; ?>">新規作成</a>
+        <a href="./new.php">新規作成</a>
     </div>
+    <form action="../users/index.php" method="post">
+        <input type="hidden" name="action" id="action" value="destroy"/>
+        <input type="submit" value="ログアウト" />
+    </form>
 
     <div>
         <h3>検索条件</h3>
-        <form action="./index.php" method="post">
+        <form action="./index.php" method="get">
             <div>
                 <div>タイトル</div>
                 <div>

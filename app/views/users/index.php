@@ -5,26 +5,24 @@ session_start();
 $error_msgs = $_SESSION["error_msgs"];
 unset($_SESSION["error_msgs"] );
 
+//ログアウトの場合
+if ($_POST["action"] == "destroy") {
+    unset($_SESSION["user_id"] );
+}
+
+$user_id = "" ;
+//セッションからユーザーID取得
+session_start();
+$user_id = $_SESSION["user_id"];
+
 //DBデータ取得・更新ファイル
 require_once '../../config/db.php';
 require_once '../../models/todo.php';
 require_once '../../controller/todoController.php';
 
-if($_SERVER["REQUEST_METHOD"] === "POST") {
+if($_SERVER["REQUEST_METHOD"] === "POST" && $_POST["action"] != "destroy") {
     $action = new TodoController;
     $action->check();
-}
-
-$user_id = '';
-$user_pw = '';
-//一度入力した内容は入力欄に表示
-if($_SERVER["REQUEST_METHOD"] === "GET") {
-    if(isset($_GET['user_id'])) {
-        $user_id = $_GET['user_id'];
-    }
-    if(isset($_GET['user_pw'])) {
-        $user_pw = $_GET['user_pw'];
-    }
 }
 
  ?>
@@ -56,7 +54,7 @@ if($_SERVER["REQUEST_METHOD"] === "GET") {
         <div>ユーザーID</div>
         <div><input name="user_id" type="text" value="<?php echo $user_id ?>"></div>
         <div>パスワード</div>
-        <div><input name="user_pw" type="text" value="<?php echo $user_pw ?>"></div>
+        <div><input name="user_pw" type="text"></div>
         <button type="submit">ログイン</button>
     </form>
 

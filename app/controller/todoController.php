@@ -5,6 +5,15 @@ require_once( dirname( __FILE__ , 2) . '/validation/TodoValidation.php' );
 
 class todoController{
 
+    public function __construct() {
+        //セッションにユーザーIDがあるかチェック
+        session_start();
+        $user_id = $_SESSION["user_id"];
+        if(!isset($user_id)) {
+            header("Location: ../users/index.php");
+        }
+    }
+
     public function index() {
         $todo_list = Todo::findAll();
         return $todo_list;
@@ -81,7 +90,7 @@ class todoController{
             $result = $todo->save();
 
             if($result === false) {
-                $params = sprintf("?user_id=%s&title=%s&detail=%s", $user_id, $title, $detail);
+                $params = sprintf("?title=%s&detail=%s", $title, $detail);
                 header("Location: ./new.php" . $params);
             }
             header("Location: ./index.php" );
@@ -169,8 +178,8 @@ class todoController{
             $error_msgs = $validation->getErrorMessages();
             session_start();
             $_SESSION['error_msgs'] = $error_msgs;
-            $params = sprintf("?user_id=%s&user_pw=%s", $user_id, $user_pw);
-            header("Location: ./index.php" . $params);
+            $_SESSION['user_id'] = $user_id;
+            header("Location: ./index.php");
         } else {
             //ユーザーID チェック
             $user_id = $_POST['user_id'];
@@ -185,14 +194,15 @@ class todoController{
                 $data_pw = $user_data['password'];
                 if ($data_pw == $user_pw) {
                     //PW 適合
-                    $params = sprintf("?user_id=%s", $user_id);
-                    header("Location: ../todos/index.php" . $params);
+                    session_start();
+                    $_SESSION['user_id'] = $user_id;
+                    header("Location: ../todos/index.php");
                 } else {
                     //PW 不適合
                     session_start();
                     $_SESSION['error_msgs'] = ["パスワードが間違っています"];
-                    $params = sprintf("?user_id=%s", $user_id);
-                    header("Location: ./index.php" . $params);
+                    $_SESSION['user_id'] = $user_id;
+                    header("Location: ./index.php");
                 }
             }
         }
