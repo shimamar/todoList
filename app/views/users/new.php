@@ -24,9 +24,6 @@ $user_id = '';
 $user_pw = '';
 //一度入力した内容は入力欄に表示
 if($_SERVER["REQUEST_METHOD"] === "GET") {
-    if(isset($_GET['user_name'])) {
-        $user_name = $_GET['user_name'];
-    }
     if(isset($_GET['user_id'])) {
         $user_id = $_GET['user_id'];
     }
@@ -57,10 +54,6 @@ if($_SERVER["REQUEST_METHOD"] === "GET") {
     <?php endif; ?>
     <div>ユーザー情報 新規作成</div>
     <form action="./new.php" method="post">
-        <div>
-            <div>お名前</div>
-            <div><input name="user_name" type="text" value="<?php echo $user_name ?>"> </div>
-        </div>
         <div>
             <div>ユーザー ID</div>
             <div><input name="user_id" type="text" value="<?php echo $user_id ?>"> </div>

@@ -4,7 +4,6 @@ require_once( dirname( __FILE__ , 2) . '/config/db.php' );
 
 class Todo {
     public $pdo;
-
     private $title;
     private $detail;
     private $status;
@@ -81,11 +80,10 @@ class Todo {
     }
 
     public static function findByQuery($query) {
-        $query = "SELECT * FROM sample.todos WHERE title LIKE '%a%'";
         $dbh = new PDO(DSN, USER, PW);
         $stmh = $dbh->query($query);
         if($stmh) {
-            $result = $stmh->fetchAll(PDO::FERCH_ASSOC);
+            $result = $stmh->fetchAll(PDO::FETCH_ASSOC);
         } else {
             $result = [];
         }

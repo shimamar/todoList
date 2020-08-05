@@ -34,10 +34,10 @@ $controller = new todoController;
 $todo_list = $controller->index();
 
 //検索データ取得
-if($_SERVER["REQUEST_METHOD"] === "POST") {
-    $action = new TodoController;
-    $todo_search = $action->search();
-}
+//if($_SERVER["REQUEST_METHOD"] === "POST") {
+//    $action = new TodoController;
+//    $todo_search = $action->search();
+//}
 
 ?>
 

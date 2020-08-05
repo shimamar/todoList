@@ -15,7 +15,15 @@ class todoController{
     }
 
     public function index() {
-        $todo_list = Todo::findAll();
+        $title = $_GET['title'];
+        $status = $_GET['staus'];
+        $deadline_date = $_GET['deadline_date'];
+        if(empty($title) && empty($status) && empty($deadline_date)) {
+            $todo_list = Todo::findAll();
+        } else {
+            $query = "SELECT * FROM sample.todos WHERE title LIKE '%" . $title . "%'";
+            $todo_list = Todo::findByQuery($query);
+        }
         return $todo_list;
     }
 
@@ -64,7 +72,7 @@ class todoController{
 
         $user_id = $_POST['user_id'];
 
-        $validation = new Validation;
+        $validation = new TodoValidation;
         $validation->setData($data);
 
         $validation_data = $validation->getData();
@@ -115,7 +123,7 @@ class todoController{
             "detail" => $_POST['detail'],
         );
 
-        $validation = new Validation;
+        $validation = new TodoValidation;
         $validation->setData($data);
         if($validation->check() === false) {
             $error_msgs = $validation->getErrorMessages();
@@ -167,13 +175,13 @@ class todoController{
             "user_pw" => $_POST['user_pw'],
         );
         //空チェック
-        $validation = new Validation;
+        $validation = new LoginValidation;
         $validation->setData($data);
         $validation_users = $validation->getData();
         $user_id = $validation_users['user_id'];
         $user_pw = $validation_users['user_pw'];
 
-        if($validation->users_check() === false) {
+        if($validation->check() === false) {
             //id 、pw いづれかが空
             $error_msgs = $validation->getErrorMessages();
             session_start();
@@ -211,17 +219,16 @@ class todoController{
 
     public function user_new () {
         $data = array(
-            "user_name" => $_POST['user_name'],
             "user_id" => $_POST['user_id'],
             "user_pw" => $_POST['user_pw']
         );
 
-        $validation = new Validation;
+        $validation = new LoginValidation;
         $validation->setData($data);
 
         $validation_data = $validation->getData();
-        $title = $validation_data['title'];
-        $detail = $validation_data['detail'];
+        $user_id = $validation_data['user_id'];
+        $user_pw = $validation_data['user_pw'];
 
         if($validation->check() === false) {
             $error_msgs = $validation->getErrorMessages();
@@ -230,8 +237,8 @@ class todoController{
             session_start();
             $_SESSION["error_msgs"] = $error_msgs;
 
-            $params = sprintf("?title=%s&detail=%s", $title, $detail);
-            header("Location: ./new.php" . $params);
+            //$params = sprintf("?title=%s&detail=%s", $title, $detail);
+            header("Location: ./new.php");
 
         } else {
 
