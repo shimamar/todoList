@@ -66,4 +66,36 @@ class LoginValidation {
     }
 }
 
+class UserValidation {
+    private $data;
+    private $error_msgs = array();
+
+    public function setData($data){
+        $this->data = $data;
+    }
+
+    public function getData() {
+        return $this->data;
+    }
+
+    public function getErrorMessages() {
+        return $this->error_msgs;
+    }
+
+    public function check() {
+        $user_id = $this->data['user_id'];
+        $user_pw = $this->data['user_pw'];
+        if(empty($user_id)) {
+            $this->error_msgs[] = 'IDを入力してください。';
+        }
+        if(empty($user_pw)) {
+            $this->error_msgs[] = 'パスワードを入力してください。';
+        }
+        if(count($this->error_msgs) > 0) {
+            return false;
+        }
+        return true;
+    }
+}
+
  ?>

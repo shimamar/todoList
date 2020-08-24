@@ -23,9 +23,9 @@ require_once '../../controller/todoController.php';
 if($_SERVER["REQUEST_METHOD"] === "POST" && $_POST["action"] != "destroy") {
     session_start();
     $_SESSION["user_id"] = $_POST['user_id'];
-    
-    $action = new TodoController;
-    $action->check();
+
+    $action = new loginController;
+    $action->login();
 }
 
  ?>

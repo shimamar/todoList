@@ -15,8 +15,8 @@ require_once '../../config/db.php';
 require_once '../../models/todo.php';
 
 if($_SERVER["REQUEST_METHOD"] === "POST") {
-    $action = new TodoController;
-    $action->user_new();
+    $action = new UserController;
+    $action->new();
 }
 
 $user_name = '';
@@ -26,9 +26,6 @@ $user_pw = '';
 if($_SERVER["REQUEST_METHOD"] === "GET") {
     if(isset($_GET['user_id'])) {
         $user_id = $_GET['user_id'];
-    }
-    if(isset($_GET['user_pw'])) {
-        $user_pw = $_GET['user_pw'];
     }
 }
 

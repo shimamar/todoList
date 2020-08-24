@@ -1,6 +1,7 @@
 <?php
 
 require_once( dirname( __FILE__ , 2) . '/models/todo.php' );
+require_once( dirname( __FILE__ , 2) . '/models/User.php' );
 require_once( dirname( __FILE__ , 2) . '/validation/TodoValidation.php' );
 
 class todoController{
@@ -168,7 +169,47 @@ class todoController{
         header("Location: ./index.php");
     }
 
-    public function check() {
+    public function user_new () {
+        $data = array(
+            "user_id" => $_POST['user_id'],
+            "user_pw" => $_POST['user_pw']
+        );
+
+        $validation = new LoginValidation;
+        $validation->setData($data);
+
+        $validation_data = $validation->getData();
+        $user_id = $validation_data['user_id'];
+        $user_pw = $validation_data['user_pw'];
+
+        if($validation->check() === false) {
+            $error_msgs = $validation->getErrorMessages();
+
+            //セッションにエラーメッセージを追加
+            session_start();
+            $_SESSION["error_msgs"] = $error_msgs;
+
+            //$params = sprintf("?title=%s&detail=%s", $title, $detail);
+            header("Location: ./new.php");
+
+        } else {
+
+            $todo = new Todo;
+            $todo->setTitle($title);
+            $todo->setDetail($detail);
+            $result = $todo->save();
+
+            if($result === false) {
+                $params = sprintf("?title=%s&detail=%s", $title, $detail);
+                header("Location: ./new.php" . $params);
+            }
+            header("Location: ./index.php" );
+        }
+    }
+}
+
+class loginController {
+    public function login() {
         // ユーザーidとPW取得
         $data = array(
             "user_id" => $_POST['user_id'],
@@ -215,17 +256,19 @@ class todoController{
             }
         }
     }
+}
 
+class UserController {
+    public function new () {
 
-    public function user_new () {
         $data = array(
             "user_id" => $_POST['user_id'],
             "user_pw" => $_POST['user_pw']
         );
 
-        $validation = new LoginValidation;
+        // 値が入力されているか
+        $validation = new UserValidation;
         $validation->setData($data);
-
         $validation_data = $validation->getData();
         $user_id = $validation_data['user_id'];
         $user_pw = $validation_data['user_pw'];
@@ -237,23 +280,25 @@ class todoController{
             session_start();
             $_SESSION["error_msgs"] = $error_msgs;
 
-            //$params = sprintf("?title=%s&detail=%s", $title, $detail);
-            header("Location: ./new.php");
+            $params = sprintf("?user_id=%s", $user_id);
+            header("Location: ./new.php"  . $params);
 
         } else {
 
-            $todo = new Todo;
-            $todo->setTitle($title);
-            $todo->setDetail($detail);
-            $result = $todo->save();
+            // 既存ユーザーに該当アカウントがないか確認
+            $user = User::isExistUserId($$user_id);
+            var_dump($user);
 
             if($result === false) {
                 $params = sprintf("?title=%s&detail=%s", $title, $detail);
                 header("Location: ./new.php" . $params);
             }
             header("Location: ./index.php" );
+
+            // ユーザー新規作成
         }
     }
 }
+
 
  ?>
