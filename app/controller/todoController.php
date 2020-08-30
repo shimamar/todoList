@@ -15,13 +15,14 @@ class todoController{
         }
     }
 
+
     public function index() {
         $title = $_GET['title'];
-        $status = $_GET['staus'];
-        $deadline_date = $_GET['deadline_date'];
-        if(empty($title) && empty($status) && empty($deadline_date)) {
+        //$status = $_GET['status'];
+        //$deadline_date = $_GET['deadline_date'];
+        if(empty($title) && empty($status)) {
             $todo_list = Todo::findAll();
-        } else {
+        } else  {
             $query = "SELECT * FROM sample.todos WHERE title LIKE '%" . $title . "%'";
             $todo_list = Todo::findByQuery($query);
         }
@@ -279,23 +280,34 @@ class UserController {
             //セッションにエラーメッセージを追加
             session_start();
             $_SESSION["error_msgs"] = $error_msgs;
-
             $params = sprintf("?user_id=%s", $user_id);
             header("Location: ./new.php"  . $params);
 
         } else {
 
             // 既存ユーザーに該当アカウントがないか確認
-            $user = User::isExistUserId($$user_id);
-            var_dump($user);
-
-            if($result === false) {
-                $params = sprintf("?title=%s&detail=%s", $title, $detail);
-                header("Location: ./new.php" . $params);
+            $user = User::isExistUserId($user_id);
+            if($user === false) {
+                //既存ユーザーの場合
+                session_start();
+                $_SESSION['error_msgs'] = ["すでに登録されているユーザーIDです。"];
+                header("Location: ./new.php");
+            } else {
+                // ユーザー新規作成
+                $new = new User;
+                $new->setId($user_id);
+                $new->setPw($user_pw);
+                $result = $new->new();
+                if(!$result){
+                    //新規作成失敗
+                    session_start();
+                    $_SESSION['error_msgs'] = ["ユーザーの新規作成が失敗しました。再度作成してください。"];
+                    header("Location: ./new.php");
+                } else {
+                    //新規作成成功
+                    header("Location: ./index.php" );
+                }
             }
-            header("Location: ./index.php" );
-
-            // ユーザー新規作成
         }
     }
 }

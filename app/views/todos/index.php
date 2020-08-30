@@ -33,12 +33,6 @@ if(isset($_GET['action']) & $_GET['action'] === 'delete') {
 $controller = new todoController;
 $todo_list = $controller->index();
 
-//検索データ取得
-//if($_SERVER["REQUEST_METHOD"] === "POST") {
-//    $action = new TodoController;
-//    $todo_search = $action->search();
-//}
-
 ?>
 
 <!DOCTYPEhtml>
@@ -68,62 +62,12 @@ $todo_list = $controller->index();
                     <input name="title" id="$title" type="text">
                 </div>
             </div>
-            <div>
-                <div>ステータス</div>
-                <div>
-                    <input name="status" id="status" type="text">
-                </div>
-            </div>
-            <div>
-                <div>締め切り日時</div>
-                <div>
-                    <input name="deadline_date" id="deadline_date" type="text">
-                </div>
-            </div>
             <button type="submit">検索</button>
         </form>
     </div>
 
 
     <h2>TODOリスト</h2>
-    <table><tbody>
-        <tr>
-            <th>ID</th>
-            <th>USER ID</th>
-            <th>TODO title</th>
-            <th>detail</th>
-            <th>priority</th>
-            <th>deadline_date</th>
-            <th>status</th>
-            <th>created_at</th>
-            <th>updated_at</th>
-            <th>deleted_at</th>
-        </tr>
-
-    <?php foreach($todo_list as $todo):?>
-
-        <tr>
-            <th><?=htmlspecialchars($todo['id'])?></th>
-            <th><?=htmlspecialchars($todo['user_id'])?></th>
-            <th><?=htmlspecialchars($todo['title'])?></th>
-            <th><?=htmlspecialchars($todo['detail'])?></th>
-            <th><?=htmlspecialchars($todo['priority'])?></th>
-            <th><?=htmlspecialchars($todo['deadline_date'])?></th>
-            <th><?=htmlspecialchars($todo['status'])?></th>
-            <th><?=htmlspecialchars($todo['created_at'])?></th>
-            <?php if($todo['updated_at']) : ?>
-                <th><?=htmlspecialchars($todo['updated_at'])?></th>
-            <?php else : ?>
-                <th>データなし</th>
-            <?php endif; ?>
-            <?php if($todo['deleted_at']) : ?>
-                <th><?=htmlspecialchars($todo['deleted_at'])?></th>
-            <?php else : ?>
-                <th>データなし</th>
-            <?php endif; ?>
-        </tr>
-    <?php endforeach;?>
-    </tbody></table>
 
     <!-- TODOリストのタイトルを押下すると詳細画面に遷移 -->
     <ul>

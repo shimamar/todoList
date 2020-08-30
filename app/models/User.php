@@ -33,11 +33,11 @@ class User {
 
     public static function isExistUserId($id){
 
-        $query = "SELECT * FROM sample.users WHERE id=%s', $id";
+        //$query = "SELECT * FROM sample.users WHERE id=%s', $id";
+
+        $query = sprintf("SELECT * FROM users WHERE id=%s;", $id);
         $dbh = new PDO(DSN, USER, PW);
         $stmh = $dbh->query($query);
-
-        var_dump($stmh);
 
         if($stmh) {
             //該当idがあった場合
@@ -46,6 +46,20 @@ class User {
             //該当idなし
             return true;
         }
+    }
+
+    public function new(){
+        $query = sprintf("INSERT INTO users VALUES (%s, %s, now(), null)", $this->id, $this->pw);
+        $dbh = new PDO(DSN, USER, PW);
+        $stmh = $dbh->query($query);
+        if(!$stmh) {
+            //新規作成に失敗
+            return false;
+        } else {
+            //新規作成成功
+            return true;
+        }
+
     }
 }
 ?>
