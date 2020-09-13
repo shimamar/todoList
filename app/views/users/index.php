@@ -31,35 +31,34 @@ if($_SERVER["REQUEST_METHOD"] === "POST" && $_POST["action"] != "destroy") {
  ?>
 
  <!DOCTYPEhtml>
- <html lang="ja">
- <head>
-     <meta charset="UTF-8">
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-     <title>ログイン画面</title>
-     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
- </head>
+ <?php include('../include/header.php'); ?>
 <body>
-    <?php if($error_msgs):?>
-        <div>
-            <ul>
-                <?php foreach ($error_msgs as $error_msg):?>
-                    <li><?php echo $error_msg; ?></li>
-                <?php endforeach;?>
-            </ul>
+    <div class="container mt-5">
+        <?php if($error_msgs):?>
+            <div>
+                <ul>
+                    <?php foreach ($error_msgs as $error_msg):?>
+                        <li><?php echo $error_msg; ?></li>
+                    <?php endforeach;?>
+                </ul>
+            </div>
+        <?php endif; ?>
+        <div class="row">
+            <div class="link col-2 offset-8 mt-4 p-2 text-center rounded">
+                <a class="link_text" href="./new.php">新規作成</a>
+            </div>
         </div>
-    <?php endif; ?>
-    <div>
-        <a href="./new.php">新規作成</a>
-    </div>
-    <div>ログイン</div>
-    <form action="./index.php" method="post">
-        <div>ユーザーID</div>
-        <div><input name="user_id" type="text" value="<?php echo $user_id ?>"></div>
-        <div>パスワード</div>
-        <div><input name="user_pw" type="text"></div>
-        <button type="submit">ログイン</button>
-    </form>
 
+        <div class="text-center p-5">
+            <h4 class="title">TODOリスト ログイン</h4>
+            <form action="./index.php" method="post">
+                <div class="text pt-4 pb-1">ユーザーID</div>
+                <div><input class="rounded border" name="user_id" type="text" value="<?php echo $user_id ?>"></div>
+                <div class="text pt-4 pb-1">パスワード</div>
+                <div><input class="rounded border" name="user_pw" type="text"></div>
+                <button class="btn btn-outline-success mt-5"type="submit">ログイン</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>

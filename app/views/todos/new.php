@@ -34,14 +34,9 @@ if($_SERVER["REQUEST_METHOD"] === "POST") {
 ?>
 
 <!DOCTYPEhtml>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>新規作成</title>
-</head>
+<?php include('../include/header.php'); ?>
 <body>
+<div class="container mt-5 text-center">
     <?php if($error_msgs):?>
         <div>
             <ul>
@@ -51,25 +46,27 @@ if($_SERVER["REQUEST_METHOD"] === "POST") {
             </ul>
         </div>
     <?php endif; ?>
-    <div>新規作成</div>
+    <h4 class="title pt-5">新規作成</h4>
     <form action="./new.php" method="post">
     <div>
-        <div>タイトル</div>
-        <div><input name="title" type="text" value="<?php echo $title; ?>"> </div>
+        <div class="text mt-4">タイトル</div>
+        <div><input class="w-50 rounded" name="title" type="text" value="<?php echo $title; ?>"></div>
     </div>
     <div>
-        <div>詳細</div>
+        <div class="text mt-3">詳細</div>
         <div>
-            <textarea name="detail"><?php echo $detail; ?></textarea>
+            <textarea class="w-50 rounded" name="detail"><?php echo $detail; ?></textarea>
         </div>
     </div>
     <input name="user_id" type="hidden" value="<?php echo $user_id; ?>">
-    <button type="submit">登録</button>
+    <button class="btn btn-outline-success my-4" type="submit">登録</button>
     </form>
 
-    <div>
-        <a href="./index.php">戻る</a>
+    <div class="row">
+        <div class="link col-2 offset-8 my-4 p-2 text-center rounded">
+            <a class="link_text" href="./index.php">戻る</a>
+        </div>
     </div>
-
+</div>
 </body>
 </html>

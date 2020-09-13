@@ -36,53 +36,50 @@ $todo_list = $controller->index();
 ?>
 
 <!DOCTYPEhtml>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>TODOリスト</title>
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-</head>
+<?php include('../include/header.php'); ?>
 <body>
-    <div>
-        <a href="./new.php">新規作成</a>
+<div class="container mt-5">
+    <div class="row pt-3">
+        <div class="link offset-2 col-md-3 col-3 text-center rounded py-2">
+            <a class="link_text" href="./new.php">新規作成</a>
+        </div>
+        <div class="offset-md-3 col-md-1 offset-2 col-3">
+            <form action="../users/index.php" method="post">
+                <input type="hidden" name="action" id="action" value="destroy"/>
+                <input class="input rounded px-4 py-1" type="submit" value="ログアウト" />
+            </form>
+        </div>
     </div>
-    <form action="../users/index.php" method="post">
-        <input type="hidden" name="action" id="action" value="destroy"/>
-        <input type="submit" value="ログアウト" />
-    </form>
 
-    <div>
-        <h3>検索条件</h3>
+    <div class="text-center p-5">
+        <h5 class="title">検索条件</h5>
         <form action="./index.php" method="get">
             <div>
                 <div>タイトル</div>
                 <div>
-                    <input name="title" id="$title" type="text">
+                    <input class="rounded" name="title" id="$title" type="text">
                 </div>
-            </div>
-            <button type="submit">検索</button>
+            <div>
+            <button class="link px-4 mt-2 mb-5" type="submit">検索</button>
         </form>
+
+
+        <h4  class="title">TODOリスト</h4>
+        <!-- TODOリストのタイトルを押下すると詳細画面に遷移 -->
+        <ul class="mt-3 list-unstyled w-75 mx-auto">
+            <?php foreach ($todo_list as $todo):?>
+                <li class="list mt-2 row">
+                    <a class="offset-2 col-6 py-1 list_text" href="./detail.php?id=<?php echo $todo['id'];?>">
+                        <?php echo $todo['title'];?>
+                    </a>
+                    <button class="delete_btn rounded offset-1 col-3" data-id="<?php echo $todo['id'];?>">
+                        削除
+                    </button>
+                </li>
+            <?php endforeach;?>
+        </ul>
     </div>
-
-
-    <h2>TODOリスト</h2>
-
-    <!-- TODOリストのタイトルを押下すると詳細画面に遷移 -->
-    <ul>
-        <?php foreach ($todo_list as $todo):?>
-            <li>
-                <a href="./detail.php?id=<?php echo $todo['id'];?>">
-                    <?php echo $todo['title'];?>
-                </a>
-                <button class="delete_btn" data-id="<?php echo $todo['id'];?>">
-                    削除
-                </button>
-            </li>
-        <?php endforeach;?>
-    </ul>
-
+</div>
 </body>
 </html>
 

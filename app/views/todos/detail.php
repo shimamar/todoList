@@ -13,20 +13,16 @@ $todo_detail = $controller->detail();
 ?>
 
 <!DOCTYPEhtml>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>詳細画面</title>
-</head>
+<?php include('../include/header.php'); ?>
 <body>
-
-    <div>
-        <a href="./index.php">戻る</a>
+<div class="container mt-5">
+    <div class="row">
+        <div class="link col-2 offset-8 mt-4 p-2 text-center rounded">
+            <a class="link_text" href="./index.php">戻る</a>
+        </div>
     </div>
 
-    <h2>TODOリスト 詳細</h2>
+    <h4 class="title">TODOリスト 詳細</h4>
     <table class="table">
         <thead>
             <tr>
@@ -41,8 +37,10 @@ $todo_detail = $controller->detail();
             </tr>
         </tbody>
     </table>
-    <div>
-        <button><a href="./edit.php?id=<?php echo $todo_detail['id'];?>">編集</a></button>
-    </div>
+    <button class="link px-4 m-3 mb-5 text-center rounded">
+        <a class="link_text" href="./edit.php?id=<?php echo $todo_detail['id'];?>">編集</a>
+    </button>
+
+</div>
 </body>
 </html>

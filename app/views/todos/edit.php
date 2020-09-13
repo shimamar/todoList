@@ -16,28 +16,25 @@ unset($_SESSION['error_msgs']);
 
 ?>
 <!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="utf-8">
-    <title>編集</title>
-</head>
+<?php include('../include/header.php'); ?>
 <body>
-    <div>編集</div>
+<div class="container mt-5 text-center">
+    <h4 class="title pt-4">編集</h4>
     <form action="./edit.php" method="post">
         <div>
-            <div>タイトル</div>
+            <div class="text mt-4">タイトル</div>
             <div>
-                <input name="title" type="text">
+                <input class="w-50 rounded" name="title" type="text">
             </div>
         </div>
         <div>
-            <div>詳細</div>
+            <div class="text mt-3">詳細</div>
             <div>
-                <textarea name="detail"></textarea>
+                <textarea class="w-50 rounded" name="detail"></textarea>
             </div>
         </div>
         <input name="id" type="hidden" value="<?php echo $_GET['id']; ?>">
-        <button type="submit">登録</button>
+        <button class="btn btn-outline-success my-4" type="submit">登録</button>
     </form>
     <?php if($error_msgs): ?>
         <div>
@@ -48,5 +45,6 @@ unset($_SESSION['error_msgs']);
             </ul>
         </div>
     <?php endif; ?>
+</div>
 </body>
 </html>
