@@ -32,20 +32,13 @@ class User {
     }
 
     public static function isExistUserId($id){
-
-        //$query = "SELECT * FROM sample.users WHERE id=%s', $id";
-
-        $query = sprintf("SELECT * FROM users WHERE id=%s;", $id);
         $dbh = new PDO(DSN, USER, PW);
+        $query = sprintf('SELECT * FROM users WHERE id = %s', $id);
         $stmh = $dbh->query($query);
-
-        if($stmh) {
-            //該当idがあった場合
-            return false;
-        } else {
-            //該当idなし
+        if(!$stmh) {
             return true;
         }
+        return false;
     }
 
     public function new(){

@@ -52,13 +52,13 @@ if($_SERVER["REQUEST_METHOD"] === "GET") {
     </div>
 
     <div class="text-center p-5">
-        <h4 class="title">アカウント作成</h4>
+        <h4 class="title">新規 アカウント発行</h4>
         <form action="./new.php" method="post">
-            <div class="text pt-4 pb-1">ユーザーID</div>
+            <div class="text pt-4 pb-1">新規 ユーザーID</div>
             <div><input class="rounded border" name="user_id" type="text" value="<?php echo $user_id ?>"> </div>
-            <div class="text pt-4 pb-1">パスワード</div>
+            <div class="text pt-4 pb-1">新規 パスワード</div>
             <div><input class="rounded border" name="user_pw" type="text" value="<?php echo $user_pw ?>"> </div>
-            <button class="btn btn-outline-success mt-5" type="submit">登録</button>
+            <button class="btn btn-outline-success mt-5" type="submit">新規登録</button>
         </form>
     </div>
 
